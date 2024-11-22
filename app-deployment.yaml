@@ -15,11 +15,10 @@ spec:
     spec:
       containers:
         - name: short-app
-          image: antonlarichev/short-app
+          image: antonlarichev/short-app:v1.0
           ports:
             - containerPort: 80
           resources:
             limits:
               memory: "128Mi"
               cpu: "500m"
-      
