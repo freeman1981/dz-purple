@@ -17,3 +17,10 @@ spec:
                 name: short-app-clusterip
                 port:
                   number: 80
+          - path: "/api"
+            pathType: Prefix
+            backend:
+              service:
+                name: short-api-clusterip
+                port:
+                  number: 3000

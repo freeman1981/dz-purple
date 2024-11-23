@@ -43,3 +43,13 @@ CREATE TABLE "Link" (
   CONSTRAINT "Link_pkey" PRIMARY KEY ("id")
 );
 ```
+
+
+```shell
+sudo minikube tunnel
+```
+
+```shell
+kubectl port-forward <pod>
+```
+

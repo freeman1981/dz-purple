@@ -20,11 +20,20 @@ spec:
             - containerPort: 5432
           env:
             - name: POSTGRES_DB
-              value: demo
+              valueFrom:
+                secretKeyRef:
+                  key: POSTGRES_DB
+                  name: postgres-secret
             - name: POSTGRES_USER
-              value: demo
+              valueFrom:
+                secretKeyRef:
+                  key: POSTGRES_USER
+                  name: postgres-secret
             - name: POSTGRES_PASSWORD
-              value: demo
+              valueFrom:
+                secretKeyRef:
+                  key: POSTGRES_PASSWORD
+                  name: postgres-secret
           resources:
             limits:
               memory: "500Mi"
