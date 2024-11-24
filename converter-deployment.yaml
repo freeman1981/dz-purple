@@ -1,25 +1,25 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: conv-api-deployment
+  name: converter-deployment
 spec:
-  replicas: 1
+  replicas: 5
   selector:
     matchLabels:
       components: backend
   template:
     metadata:
-      name: conv-api
+      name: converter
       labels:
         components: backend
     spec:
       containers:
-        - name: conv-api
-          image: antonlarichev/conv-api:1.0
+        - name: converter
+          image: antonlarichev/conv-service:1.0
           resources:
             limits:
               memory: "500Mi"
-              cpu: "200m"
+              cpu: "100m"
           env:
             - name: AMQP_EXCHANGE
               value: conv-image
@@ -35,16 +35,5 @@ spec:
                   name: rabbit-secret
             - name: AMQP_HOSTNAME
               value: rabbit-clusterip
-            - name: WHITE_DOMAIN
-              valueFrom:
-                configMapKeyRef:
-                  name: config-map
-                  key: WHITE_DOMAIN
-          volumeMounts:
-            - mountPath: /opt/app/uploads
-              name: conv-data
-              subPath: data
-      volumes:
-        - name: conv-data
-          persistentVolumeClaim:
-            claimName: api-pvc
+            - name: AMQP_QUEUE
+              value: conv-image-queue
