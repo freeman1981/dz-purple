@@ -26,20 +26,20 @@ spec:
             - name: AMQP_USER
               valueFrom:
                 secretKeyRef:
-                  key: SEED_USERNAME
+                  key: RABBITMQ_DEFAULT_USER
                   name: rabbit-secret
             - name: AMQP_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  key: SEED_USER_PASSWORD
+                  key: RABBITMQ_DEFAULT_PASS
                   name: rabbit-secret
             - name: AMQP_HOSTNAME
               value: rabbit-clusterip
-            - name: WHITE_DOMAIN
+            - name: VITE_DOMAIN
               valueFrom:
                 configMapKeyRef:
                   name: config-map
-                  key: WHITE_DOMAIN
+                  key: VITE_DOMAIN
           volumeMounts:
             - mountPath: /opt/app/uploads
               name: conv-data

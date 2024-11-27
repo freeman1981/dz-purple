@@ -7,5 +7,5 @@ spec:
     components: rabbit
   ports:
     - protocol: TCP
-      port: 5432
+      port: 5672
   type: ClusterIP

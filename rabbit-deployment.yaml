@@ -15,19 +15,19 @@ spec:
     spec:
       containers:
         - name: rabbit
-          image: rabbitmq:4
+          image: rabbitmq:3.7.3
           ports:
             - containerPort: 5672
           env:
-            - name: SEED_USERNAME
+            - name: RABBITMQ_DEFAULT_USER
               valueFrom:
                 secretKeyRef:
-                  key: SEED_USERNAME
+                  key: RABBITMQ_DEFAULT_USER
                   name: rabbit-secret
-            - name: SEED_USER_PASSWORD
+            - name: RABBITMQ_DEFAULT_PASS
               valueFrom:
                 secretKeyRef:
-                  key: SEED_USER_PASSWORD
+                  key: RABBITMQ_DEFAULT_PASS
                   name: rabbit-secret
           resources:
             limits:
