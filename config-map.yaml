@@ -3,4 +3,4 @@ kind: ConfigMap
 metadata:
   name: config-map
 data:
-  VITE_DOMAIN: ""
+  VITE_DOMAIN: "conv.test"
