@@ -1,0 +1,50 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: converter-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      components: backend
+  template:
+    metadata:
+      name: converter
+      labels:
+        components: backend
+    spec:
+      containers:
+        - name: converter
+          image: antonlarichev/conv-service:1.0
+          ports:
+            - containerPort: 3000
+            - containerPort: 3030  # ???
+          resources:
+            limits:
+              memory: "500Mi"
+              cpu: "100m"
+          env:
+            - name: AMQP_EXCHANGE
+              value: conv-image
+            - name: AMQP_USER
+              valueFrom:
+                secretKeyRef:
+                  key: RABBITMQ_DEFAULT_USER
+                  name: rabbit-secret
+            - name: AMQP_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: RABBITMQ_DEFAULT_PASS
+                  name: rabbit-secret
+            - name: AMQP_HOSTNAME
+              value: rabbit-clusterip
+            - name: AMQP_QUEUE
+              value: conv-image-queue
+          volumeMounts:
+            - mountPath: /opt/app/uploads
+              name: conv-data
+              subPath: data
+      volumes:
+        - name: conv-data
+          persistentVolumeClaim:
+            claimName: api-pvc
