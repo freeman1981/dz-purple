@@ -3,37 +3,47 @@ kind: Deployment
 metadata:
   name: converter-deployment
 spec:
-  replicas: 5
   selector:
     matchLabels:
       components: backend
+  replicas: 1
   template:
     metadata:
-      name: converter
       labels:
         components: backend
     spec:
       containers:
         - name: converter
           image: antonlarichev/conv-service:1.0
+          ports:
+            - containerPort: 4000
           resources:
-            limits:
-              memory: "500Mi"
+            requests:
+              memory: "128Mi"
               cpu: "100m"
+            limits:
+              memory: "512Mi"
+              cpu: "500m"
           env:
             - name: AMQP_EXCHANGE
               value: conv-image
             - name: AMQP_USER
               valueFrom:
                 secretKeyRef:
-                  key: RABBITMQ_DEFAULT_USER
-                  name: rabbit-secret
+                  key: AMQP_USER
+                  name: rabbitmq-secret
             - name: AMQP_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  key: RABBITMQ_DEFAULT_PASS
-                  name: rabbit-secret
+                  key: AMQP_PASSWORD
+                  name: rabbitmq-secret
             - name: AMQP_HOSTNAME
-              value: rabbit-clusterip
+              valueFrom:
+                secretKeyRef:
+                  key: AMQP_HOSTNAME
+                  name: rabbitmq-secret
             - name: AMQP_QUEUE
-              value: conv-image-queue
+              valueFrom:
+                secretKeyRef:
+                  key: AMQP_QUEUE
+                  name: rabbitmq-secret

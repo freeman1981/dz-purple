@@ -1,7 +1,9 @@
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: conv-app-deployment
+
 spec:
   replicas: 1
   selector:
@@ -28,5 +30,5 @@ spec:
             - name: VITE_DOMAIN
               valueFrom:
                 configMapKeyRef:
-                  name: config-map
+                  name: conv-app-configmap
                   key: VITE_DOMAIN

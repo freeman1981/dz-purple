@@ -1,14 +1,13 @@
 ---
-# https://kubernetes.io/docs/concepts/storage/persistent-volumes/
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: conv-api-pvc
+  name: rabbitmq-pvc
 spec:
   accessModes:
     - ReadWriteOnce
   resources:
     requests:
-      storage: 521Mi
+      storage: "512Mi"
     limits:
-      storage: 1Gi
+      storage: "1Gi"

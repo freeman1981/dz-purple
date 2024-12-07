@@ -1,25 +1,24 @@
 ---
 # https://kubernetes.io/docs/concepts/workloads/controllers/deployment/
-# https://kubernetes.io/docs/reference/kubernetes-api/workload-resources/deployment-v1/
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: conv-api-deployment
+  name: conv-service-deployment
 spec:
   selector:
     matchLabels:
-      components: backend
+      components: service
   replicas: 1
   template:
     metadata:
       labels:
-        components: backend
+        components: service
     spec:
       containers:
         - name: conv-api
-          image: antonlarichev/conv-api:1.0
+          image: antonlarichev/conv-service:1.0
           ports:
-            - containerPort: 3000
+            - containerPort: 4000
           resources:
             requests:
               memory: "128Mi"
@@ -29,23 +28,27 @@ spec:
               cpu: "500m"
           env:
             - name: AMQP_EXCHANGE
-              value: conv-image
+              valueFrom:
+                secretKeyRef:
+                  key: AMQP_EXCHANGE
+                  name: rabbitmq-secret
             - name: AMQP_USER
               valueFrom:
                 secretKeyRef:
                   key: AMQP_USER
-                  name: rabbit-secret
+                  name: rabbitmq-secret
             - name: AMQP_PASSWORD
               valueFrom:
                 secretKeyRef:
                   key: AMQP_PASSWORD
-                  name: rabbit-secret
+                  name: rabbitmq-secret
             - name: AMQP_HOSTNAME
-              value: rabbit-clusterip
-          volumeMounts:
-            - mountPath: /opt/app/uploads
-              name: conv-api-data
-      volumes:
-        - name: conv-api-data
-          persistentVolumeClaim:
-            claimName: conv-api-pvc
+              valueFrom:
+                secretKeyRef:
+                  key: AMQP_HOSTNAME
+                  name: rabbitmq-secret
+            - name: AMQP_QUEUE
+              valueFrom:
+                secretKeyRef:
+                  key: AMQP_QUEUE
+                  name: rabbitmq-secret

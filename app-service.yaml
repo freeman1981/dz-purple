@@ -4,8 +4,8 @@ metadata:
   name: conv-app-clusterip
 spec:
   type: ClusterIP
+  ports:
+    - port: 80
+      protocol: TCP
   selector:
     components: frontend
-  ports:
-    - protocol: TCP
-      port: 80
